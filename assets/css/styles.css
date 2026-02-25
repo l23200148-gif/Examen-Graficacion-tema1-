@@ -1,0 +1,13 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-bottom: 60px; /* Espacio para el footer */
+}
+
+canvas {
+    background-color: #0b1a2a; /* Color de fondo base parecido a la imagen */
+    border-radius: 8px;
+}
+
+img {
+    border-radius: 8px;
+}
