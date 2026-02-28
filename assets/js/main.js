@@ -2,135 +2,131 @@
  * ---------------------------------------------------------
  * APLICACIÓN: Examen Tema 1. Introducción a la graficación
  * PROGRAMADOR: ELCHECHEEE
- * DESCRIPCIÓN: Recreación de Contra (Estilo Geométrico Detallado)
- * Intento definitivo para que los personajes sean reconocibles
- * usando solo figuras geométricas básicas (>30 figuras).
+ * DESCRIPCIÓN: Recreación de Master Chief (Halo) con Espada de Energía.
+ * Construido con más de 40 figuras básicas (Rectángulos, Líneas y Polígonos).
  * ---------------------------------------------------------
  */
 
 const canvas = document.getElementById('miCanvas');
 const ctx = canvas.getContext('2d');
 
-// --- 1. FONDO Y CUADRÍCULA (Aprox 20 figuras) ---
+// --- 1. FONDO Y CUADRÍCULA (Cuenta como múltiples figuras: líneas) ---
 function dibujarFondo() {
-    // Cielo oscuro
-    ctx.fillStyle = '#0a1526'; 
+    // Fondo principal (1 figura)
+    ctx.fillStyle = '#ffffff'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Cuadrícula azul neón
-    ctx.strokeStyle = 'rgba(26, 54, 93, 0.5)'; // Sutil
+    // Líneas de cuadrícula sutiles
+    ctx.strokeStyle = '#e0e0e0';
     ctx.lineWidth = 1;
-    for (let x = 0; x <= canvas.width; x += 25) {
+
+    for (let x = 0; x <= canvas.width; x += 20) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
     }
-    for (let y = 0; y <= canvas.height; y += 25) {
+    for (let y = 0; y <= canvas.height; y += 20) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
     }
 }
 
-// --- 2. PAISAJE DE JUNGLA (Aprox 15 figuras) ---
-function dibujarPaisaje() {
-    ctx.fillStyle = '#0f2922'; // Verde oscuro selva
-    
-    // Montañas / Árboles de fondo (Polígonos)
-    const picos = [
-        [0, 400, 60, 240, 160, 400],
-        [120, 400, 220, 180, 320, 400],
-        [280, 400, 380, 260, 480, 400],
-        [420, 400, 520, 200, 600, 400]
-    ];
-
-    picos.forEach(pico => {
-        ctx.beginPath();
-        ctx.moveTo(pico[0], pico[1]);
-        ctx.lineTo(pico[2], pico[3]);
-        ctx.lineTo(pico[4], pico[5]);
-        ctx.fill();
-    });
-
-    // Suelo (Rectángulo)
-    ctx.fillStyle = '#05110e';
-    ctx.fillRect(0, 350, 600, 50);
-}
-
-// --- 3. LOGO CONTRA (Aprox 20 figuras) ---
-function dibujarLogo() {
-    // La "C" de Fuego (Arcos superpuestos)
-    ctx.beginPath();
-    ctx.arc(130, 120, 50, Math.PI * 0.6, Math.PI * 1.4, false);
-    ctx.lineWidth = 25;
-    ctx.strokeStyle = '#ffcc00'; // Amarillo base
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(130, 120, 50, Math.PI * 0.6, Math.PI * 1.4, false);
-    ctx.lineWidth = 12;
-    ctx.strokeStyle = '#ff3300'; // Rojo interior
-    ctx.stroke();
-
-    // Texto ONTRA (Rectángulos y polígonos)
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#ff0055';
+// --- FUNCIÓN AUXILIAR PARA DIBUJAR BLOQUES ---
+// Dibuja un rectángulo con relleno y borde (2 figuras básicas por bloque)
+function dibujarBloque(x, y, ancho, alto, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, ancho, alto);
+    ctx.strokeStyle = '#000000'; // Borde negro estilo pixel art
     ctx.lineWidth = 2;
-    const rellenar = (x, y, w, h) => { ctx.fillRect(x,y,w,h); ctx.strokeRect(x,y,w,h); }
-
-    // O
-    rellenar(190, 80, 40, 50); ctx.fillStyle = '#0a1526'; ctx.fillRect(200, 90, 20, 30); ctx.fillStyle = '#ffffff';
-    // N
-    rellenar(240, 80, 12, 50); rellenar(278, 80, 12, 50);
-    ctx.beginPath(); ctx.moveTo(240,80); ctx.lineTo(290,130); ctx.lineTo(278,130); ctx.lineTo(240,95); ctx.fill(); ctx.stroke();
-    // T
-    rellenar(305, 80, 40, 12); rellenar(319, 80, 12, 50);
-    // R
-    rellenar(360, 80, 12, 50); rellenar(360, 80, 35, 25);
-    ctx.fillStyle = '#0a1526'; ctx.fillRect(372, 90, 13, 8); ctx.fillStyle = '#ffffff';
-    ctx.beginPath(); ctx.moveTo(360,105); ctx.lineTo(395,130); ctx.lineTo(380,130); ctx.lineTo(360,115); ctx.fill(); ctx.stroke();
-    // A
-    rellenar(415, 80, 12, 50); rellenar(450, 80, 12, 50); rellenar(415, 80, 47, 12); rellenar(415, 105, 47, 12);
+    ctx.strokeRect(x, y, ancho, alto);
 }
 
-// --- 4. PERSONAJES DETALLADOS (Aprox 40 figuras) ---
-function dibujarPersonajesDetallados() {
-    // --- HÉROE 1: BANDANA ROJA (Izquierda) ---
-    const piel = '#e89e92';
-    const ropa = '#000000';
+// --- 2. ESPADA DE ENERGÍA (Rectángulos y Polígonos) ---
+function dibujarEspada() {
+    const c_espada = '#87CEEB'; // Azul claro
+    const c_mango = '#808080';  // Gris
 
-    // Torso musculoso (Polígono)
-    ctx.fillStyle = piel;
+    // Mango y guardas
+    dibujarBloque(150, 100, 20, 70, c_mango); // Mango central
+    dibujarBloque(135, 90, 35, 15, c_espada); // Guarda superior
+    dibujarBloque(135, 165, 35, 15, c_espada); // Guarda inferior
+
+    // Hojas de la espada (Rectángulos)
+    dibujarBloque(60, 95, 75, 10, c_espada); // Hoja superior
+    dibujarBloque(60, 165, 75, 10, c_espada); // Hoja inferior
+
+    // Puntas de la espada (Polígonos / Triángulos)
+    // Punta Superior
+    ctx.fillStyle = c_espada;
     ctx.beginPath();
-    ctx.moveTo(260, 270); // Hombro izq
-    ctx.lineTo(310, 270); // Hombro der
-    ctx.lineTo(300, 320); // Cintura der
-    ctx.lineTo(270, 320); // Cintura izq
-    ctx.fill();
-    // Pectorales (Círculos)
-    ctx.beginPath(); ctx.arc(275, 285, 15, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(295, 285, 15, 0, Math.PI*2); ctx.fill();
+    ctx.moveTo(60, 95);  // Esquina superior
+    ctx.lineTo(20, 100); // Punta extrema
+    ctx.lineTo(60, 105); // Esquina inferior
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
 
-    // Cabeza y Pelo
-    ctx.fillStyle = piel;
-    ctx.fillRect(275, 240, 20, 30);
-    ctx.fillStyle = '#000000'; // Pelo negro
-    ctx.beginPath(); ctx.moveTo(275, 240); ctx.lineTo(270, 220); ctx.lineTo(300, 225); ctx.lineTo(295, 245); ctx.fill();
-
-    // Bandana Roja Épica
-    ctx.fillStyle = '#ff0000';
-    ctx.fillRect(273, 242, 24, 8);
-    ctx.beginPath(); ctx.moveTo(297, 245); ctx.lineTo(315, 240); ctx.lineTo(310, 255); ctx.fill(); // Nudo
-
-    // Piernas (Ropa negra)
-    ctx.fillStyle = ropa;
+    // Punta Inferior
     ctx.beginPath();
-    ctx.moveTo(270, 320); ctx.lineTo(260, 380); // Pierna izq
-    ctx.lineTo(285, 380); ctx.lineTo(285, 320); // Entrepierna
-    ctx.lineTo(300, 320); ctx.lineTo(310, 380); // Pierna der
-    ctx.lineTo(330, 380); ctx.lineTo(300, 320); 
-    ctx.fill();
+    ctx.moveTo(60, 165); 
+    ctx.lineTo(20, 170); 
+    ctx.lineTo(60, 175); 
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
 
-    // Arma: Rifle (Rectángulos)
-    ctx.fillStyle = '#333333';
-    ctx.fillRect(280, 290, 50, 10); // Cuerpo
-    ctx.fillRect(330, 292, 20, 6); // Cañón
-    ctx.fillRect(290, 300, 10, 15); // Cargador
+    // Núcleo de energía (Líneas blancas interiores)
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(50, 98, 85, 4);
+    ctx.fillRect(50, 168, 85, 4);
+}
 
-    // --- HÉROE 2:
+// --- 3. ARMADURA SPARTAN (Compuesta de rectángulos precisos) ---
+function dibujarMasterChief() {
+    const c_verde = '#228B22'; // Verde armadura
+    const c_verdeOscuro = '#006400'; // Sombra armadura
+    const c_negro = '#111111'; // Traje interior
+    const c_visor = '#FFA500'; // Naranja visor
+
+    // --- CASCO ---
+    dibujarBloque(280, 30, 80, 15, c_verde); // Visera superior
+    dibujarBloque(300, 10, 70, 20, c_verde); // Domo del casco
+    dibujarBloque(290, 45, 50, 20, c_visor); // Visor naranja
+    dibujarBloque(340, 45, 40, 40, c_verdeOscuro); // Nuca
+    dibujarBloque(290, 65, 40, 20, c_verde); // Barbilla
+
+    // --- TORSO ---
+    dibujarBloque(310, 85, 30, 15, c_negro); // Cuello
+    dibujarBloque(290, 100, 90, 50, c_verde); // Pecho principal
+    dibujarBloque(300, 150, 70, 30, c_verdeOscuro); // Placa inferior pecho
+    dibujarBloque(310, 180, 50, 30, c_negro); // Abdomen traje interior
+    dibujarBloque(300, 210, 70, 30, c_verde); // Pelvis
+
+    // --- BRAZO IZQUIERDO (Sosteniendo la espada) ---
+    dibujarBloque(250, 110, 40, 40, c_verdeOscuro); // Hombrera
+    dibujarBloque(190, 120, 60, 30, c_verde); // Antebrazo estirado
+    dibujarBloque(170, 115, 20, 40, c_negro); // Mano / Guante
+
+    // --- BRAZO DERECHO (Atrás) ---
+    dibujarBloque(380, 100, 40, 40, c_verde); // Hombrera derecha
+    dibujarBloque(390, 140, 20, 30, c_negro); // Bíceps
+    dibujarBloque(400, 160, 30, 50, c_verdeOscuro); // Antebrazo derecho
+    dibujarBloque(390, 210, 25, 25, c_negro); // Puño
+
+    // --- PIERNA IZQUIERDA (Frente) ---
+    dibujarBloque(280, 240, 40, 50, c_verde); // Muslo
+    dibujarBloque(290, 290, 30, 20, c_negro); // Rodilla
+    dibujarBloque(270, 310, 40, 50, c_verdeOscuro); // Espinillera
+    dibujarBloque(240, 360, 60, 25, c_verde); // Bota
+
+    // --- PIERNA DERECHA (Atrás) ---
+    dibujarBloque(350, 240, 35, 45, c_verdeOscuro); // Muslo derecho
+    dibujarBloque(360, 285, 25, 20, c_negro); // Rodilla derecha
+    dibujarBloque(350, 305, 35, 55, c_verde); // Espinillera derecha
+    dibujarBloque(350, 360, 60, 25, c_verdeOscuro); // Bota derecha
+}
+
+// --- EJECUCIÓN DEL DIBUJO ---
+function generarDibujo() {
+    dibujarFondo();
+    // Se dibuja primero la espada para que el brazo quede por encima
+    dibujarEspada();
+    dibujarMasterChief();
+}
+
+generarDibujo();
