@@ -2,41 +2,42 @@
  * ---------------------------------------------------------
  * APLICACIÓN: Examen Tema 1. Introducción a la graficación
  * PROGRAMADOR: ELCHECHEEE
- * DESCRIPCIÓN: Recreación de Contra (Estilo Silueta Retro)
- * Cumple con >30 figuras (líneas, triángulos, rectángulos, arcos)
+ * DESCRIPCIÓN: Recreación de Contra (Estilo Geométrico Detallado)
+ * Intento definitivo para que los personajes sean reconocibles
+ * usando solo figuras geométricas básicas (>30 figuras).
  * ---------------------------------------------------------
  */
 
 const canvas = document.getElementById('miCanvas');
 const ctx = canvas.getContext('2d');
 
-// --- 1. FONDO Y CUADRÍCULA (Aprox 20 figuras: líneas y rectángulos) ---
+// --- 1. FONDO Y CUADRÍCULA (Aprox 20 figuras) ---
 function dibujarFondo() {
     // Cielo oscuro
     ctx.fillStyle = '#0a1526'; 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Cuadrícula azul neón (Figuras)
-    ctx.strokeStyle = '#1a365d';
+    // Cuadrícula azul neón
+    ctx.strokeStyle = 'rgba(26, 54, 93, 0.5)'; // Sutil
     ctx.lineWidth = 1;
-    for (let x = 0; x <= canvas.width; x += 30) {
+    for (let x = 0; x <= canvas.width; x += 25) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
     }
-    for (let y = 0; y <= canvas.height; y += 30) {
+    for (let y = 0; y <= canvas.height; y += 25) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
     }
 }
 
-// --- 2. PAISAJE DE JUNGLA (Aprox 10 figuras: triángulos/polígonos) ---
+// --- 2. PAISAJE DE JUNGLA (Aprox 15 figuras) ---
 function dibujarPaisaje() {
     ctx.fillStyle = '#0f2922'; // Verde oscuro selva
     
-    // Montañas / Árboles de fondo
+    // Montañas / Árboles de fondo (Polígonos)
     const picos = [
-        [0, 400, 50, 250, 150, 400],
-        [100, 400, 200, 200, 300, 400],
-        [250, 400, 350, 280, 450, 400],
-        [400, 400, 500, 220, 600, 400]
+        [0, 400, 60, 240, 160, 400],
+        [120, 400, 220, 180, 320, 400],
+        [280, 400, 380, 260, 480, 400],
+        [420, 400, 520, 200, 600, 400]
     ];
 
     picos.forEach(pico => {
@@ -47,100 +48,89 @@ function dibujarPaisaje() {
         ctx.fill();
     });
 
-    // Suelo
+    // Suelo (Rectángulo)
     ctx.fillStyle = '#05110e';
     ctx.fillRect(0, 350, 600, 50);
 }
 
-// --- 3. LOGO CONTRA (Aprox 15 figuras: arcos y rectángulos) ---
+// --- 3. LOGO CONTRA (Aprox 20 figuras) ---
 function dibujarLogo() {
-    ctx.strokeStyle = '#ffcc00'; // Amarillo
+    // La "C" de Fuego (Arcos superpuestos)
+    ctx.beginPath();
+    ctx.arc(130, 120, 50, Math.PI * 0.6, Math.PI * 1.4, false);
+    ctx.lineWidth = 25;
+    ctx.strokeStyle = '#ffcc00'; // Amarillo base
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(130, 120, 50, Math.PI * 0.6, Math.PI * 1.4, false);
     ctx.lineWidth = 12;
-
-    // Letra C (2 Arcos)
-    ctx.beginPath();
-    ctx.arc(140, 100, 45, Math.PI * 0.6, Math.PI * 1.4, false);
-    ctx.stroke();
-    ctx.strokeStyle = '#ff3300'; // Borde rojo
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.arc(140, 100, 45, Math.PI * 0.6, Math.PI * 1.4, false);
+    ctx.strokeStyle = '#ff3300'; // Rojo interior
     ctx.stroke();
 
-    // Texto ONTRA (Rectángulos puros)
+    // Texto ONTRA (Rectángulos y polígonos)
     ctx.fillStyle = '#ffffff';
     ctx.strokeStyle = '#ff0055';
     ctx.lineWidth = 2;
-
     const rellenar = (x, y, w, h) => { ctx.fillRect(x,y,w,h); ctx.strokeRect(x,y,w,h); }
 
     // O
-    rellenar(200, 70, 35, 45);
-    ctx.fillStyle = '#0a1526'; ctx.fillRect(210, 80, 15, 25); ctx.fillStyle = '#ffffff'; // Hueco
+    rellenar(190, 80, 40, 50); ctx.fillStyle = '#0a1526'; ctx.fillRect(200, 90, 20, 30); ctx.fillStyle = '#ffffff';
     // N
-    rellenar(250, 70, 10, 45); rellenar(280, 70, 10, 45);
-    ctx.beginPath(); ctx.moveTo(250,70); ctx.lineTo(290,115); ctx.lineTo(280,115); ctx.lineTo(250,85); ctx.fill(); ctx.stroke();
+    rellenar(240, 80, 12, 50); rellenar(278, 80, 12, 50);
+    ctx.beginPath(); ctx.moveTo(240,80); ctx.lineTo(290,130); ctx.lineTo(278,130); ctx.lineTo(240,95); ctx.fill(); ctx.stroke();
     // T
-    rellenar(305, 70, 35, 10); rellenar(317, 70, 10, 45);
+    rellenar(305, 80, 40, 12); rellenar(319, 80, 12, 50);
     // R
-    rellenar(355, 70, 10, 45); rellenar(355, 70, 30, 25);
-    ctx.fillStyle = '#0a1526'; ctx.fillRect(365, 80, 10, 5); ctx.fillStyle = '#ffffff';
-    ctx.beginPath(); ctx.moveTo(355,95); ctx.lineTo(385,115); ctx.lineTo(375,115); ctx.lineTo(355,105); ctx.fill(); ctx.stroke();
+    rellenar(360, 80, 12, 50); rellenar(360, 80, 35, 25);
+    ctx.fillStyle = '#0a1526'; ctx.fillRect(372, 90, 13, 8); ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.moveTo(360,105); ctx.lineTo(395,130); ctx.lineTo(380,130); ctx.lineTo(360,115); ctx.fill(); ctx.stroke();
     // A
-    rellenar(405, 70, 10, 45); rellenar(435, 70, 10, 45);
-    rellenar(405, 70, 40, 10); rellenar(405, 90, 40, 10);
+    rellenar(415, 80, 12, 50); rellenar(450, 80, 12, 50); rellenar(415, 80, 47, 12); rellenar(415, 105, 47, 12);
 }
 
-// --- 4. SILUETAS DE LOS HÉROES (Aprox 10 figuras) ---
-function dibujarSiluetas() {
-    ctx.fillStyle = '#000000'; // Negro puro para las siluetas
+// --- 4. PERSONAJES DETALLADOS (Aprox 40 figuras) ---
+function dibujarPersonajesDetallados() {
+    // --- HÉROE 1: BANDANA ROJA (Izquierda) ---
+    const piel = '#e89e92';
+    const ropa = '#000000';
 
-    // Héroe 1 (Izquierda) - Compuesto por polígonos simples
+    // Torso musculoso (Polígono)
+    ctx.fillStyle = piel;
     ctx.beginPath();
-    ctx.moveTo(270, 350); // Pie izq
-    ctx.lineTo(290, 290); // Pierna
-    ctx.lineTo(280, 250); // Torso izq
-    ctx.lineTo(310, 250); // Torso der
-    ctx.lineTo(320, 290); // Pierna der
-    ctx.lineTo(340, 350); // Pie der
+    ctx.moveTo(260, 270); // Hombro izq
+    ctx.lineTo(310, 270); // Hombro der
+    ctx.lineTo(300, 320); // Cintura der
+    ctx.lineTo(270, 320); // Cintura izq
+    ctx.fill();
+    // Pectorales (Círculos)
+    ctx.beginPath(); ctx.arc(275, 285, 15, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(295, 285, 15, 0, Math.PI*2); ctx.fill();
+
+    // Cabeza y Pelo
+    ctx.fillStyle = piel;
+    ctx.fillRect(275, 240, 20, 30);
+    ctx.fillStyle = '#000000'; // Pelo negro
+    ctx.beginPath(); ctx.moveTo(275, 240); ctx.lineTo(270, 220); ctx.lineTo(300, 225); ctx.lineTo(295, 245); ctx.fill();
+
+    // Bandana Roja Épica
+    ctx.fillStyle = '#ff0000';
+    ctx.fillRect(273, 242, 24, 8);
+    ctx.beginPath(); ctx.moveTo(297, 245); ctx.lineTo(315, 240); ctx.lineTo(310, 255); ctx.fill(); // Nudo
+
+    // Piernas (Ropa negra)
+    ctx.fillStyle = ropa;
+    ctx.beginPath();
+    ctx.moveTo(270, 320); ctx.lineTo(260, 380); // Pierna izq
+    ctx.lineTo(285, 380); ctx.lineTo(285, 320); // Entrepierna
+    ctx.lineTo(300, 320); ctx.lineTo(310, 380); // Pierna der
+    ctx.lineTo(330, 380); ctx.lineTo(300, 320); 
     ctx.fill();
 
-    // Cabeza y Bandana 1
-    ctx.fillRect(285, 230, 20, 20); // Cabeza
-    ctx.fillStyle = '#ff0000'; ctx.fillRect(283, 235, 24, 6); // Bandana
-    ctx.fillStyle = '#000000';
+    // Arma: Rifle (Rectángulos)
+    ctx.fillStyle = '#333333';
+    ctx.fillRect(280, 290, 50, 10); // Cuerpo
+    ctx.fillRect(330, 292, 20, 6); // Cañón
+    ctx.fillRect(290, 300, 10, 15); // Cargador
 
-    // Arma 1
-    ctx.fillRect(310, 260, 40, 8); // Rifle apuntando derecha
-
-    // Héroe 2 (Derecha) 
-    ctx.beginPath();
-    ctx.moveTo(400, 350);
-    ctx.lineTo(380, 290);
-    ctx.lineTo(390, 250);
-    ctx.lineTo(420, 250);
-    ctx.lineTo(410, 290);
-    ctx.lineTo(430, 350);
-    ctx.fill();
-
-    // Cabeza 2
-    ctx.fillRect(395, 230, 20, 20);
-    
-    // Arma 2 (Apuntando arriba)
-    ctx.beginPath();
-    ctx.moveTo(390, 260);
-    ctx.lineTo(360, 220);
-    ctx.lineTo(365, 215);
-    ctx.lineTo(395, 255);
-    ctx.fill();
-}
-
-// --- EJECUCIÓN ---
-function generarArteFinal() {
-    dibujarFondo();
-    dibujarPaisaje();
-    dibujarLogo();
-    dibujarSiluetas();
-}
-
-generarArteFinal();
+    // --- HÉROE 2:
